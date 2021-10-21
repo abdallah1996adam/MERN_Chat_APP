@@ -6,11 +6,16 @@ import Cookies from "universal-cookie/es6";
 import "./App.css";
 //components
 import { ChannelContainer, ChannelContainerList } from "./components";
+//pages
+import { Auth } from "./pages";
 
 const client = StreamChat.getInstance(process.env.REACT_APP_API_KEY);
+const authToken = false;
+
 
 function App() {
-  return (
+  if (!authToken) return <Auth/>
+  return ( 
     <div className="app__wrapper">
       <Chat client={client} theme="tam light">
         <ChannelContainer />
