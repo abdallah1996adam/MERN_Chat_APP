@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
-import api from "../../services/api";
+import userService from "../../services/user";
 //images
 import signinImage from "../../assets/signup.jpg";
 
+const cookies = new Cookies();
 const initialState = {
   fullName: "",
   userName: "",
@@ -24,10 +25,28 @@ const Auth = () => {
     setForm({ ...form, [e.target.value]: e.target.name });
   };
 
-  const handleSubmit = (e)=>{
-      e.preventDefault()
-      console.log(form);
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { password, fullName, phoneNumber, userName, profilepicURL } = form;
+
+      const {data: {token, userId, hashedPassword}} = await userService.signup(
+        password,
+        fullName,
+        phoneNumber,
+        userName
+      );
+
+      cookies.set('token', token)
+      cookies.set('userName', userName)
+      cookies.set('token', token)
+      cookies.set('token', token)
+
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="auth__form-container">

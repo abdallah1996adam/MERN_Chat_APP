@@ -10,7 +10,7 @@ const appId = process.env.STREAM_APP_ID;
 const secretKey = process.env.STREAM_SECRET_KEY;
 
 exports.signup = async (request, response) => {
-  const { password, fullName, phoneNumber, username } = request.body;
+  const { password, fullName, phoneNumber, userName } = request.body;
 
   console.log(request.body);
 
@@ -22,7 +22,7 @@ exports.signup = async (request, response) => {
 
     return response
       .status(201)
-      .json({ password, hashedPassword, phoneNumber, username });
+      .json({ password, hashedPassword, phoneNumber, userName });
   } catch (error) {
     console.log(error);
     return response.status(500).json({ message: error.message });
@@ -30,12 +30,12 @@ exports.signup = async (request, response) => {
 };
 
 exports.signin = async (request, response) => {
-  const { username, password } = request.body;
+  const { userName, password } = request.body;
 
   try {
     const serverClient = connect(apiKey, appId, secretKey);
     const client = StreamChat.getInstance(apiKey, secretKey);
-    const { users } = client.queryUsers({ name: username });
+    const { users } = client.queryUsers({ name: userName });
 
     if (!users.length)
       return response.status(400).json({ message: "user not found" });
@@ -48,7 +48,7 @@ exports.signin = async (request, response) => {
         .json({
           token,
           fullName: users[0].fullName,
-          username,
+          userName,
           userId: users[0].id,
         });
     }else{
