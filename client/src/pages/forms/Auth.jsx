@@ -18,7 +18,9 @@ const Auth = () => {
   const [isSignup, setIsSignup] = useState(true);
   const [form, setForm] = useState(initialState);
 
-  const switchMode = () => {};
+  const switchMode = () => {
+    setIsSignup((prevIsSignup) => !prevIsSignup);
+  };
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
