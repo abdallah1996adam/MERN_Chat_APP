@@ -18,9 +18,7 @@ const Auth = () => {
   const [isSignup, setIsSignup] = useState(true);
   const [form, setForm] = useState(initialState);
 
-  const switchMode = () => {
-    setIsSignup((prevIsSignup) => !prevIsSignup);
-  };
+  const switchMode = () => {};
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -29,29 +27,29 @@ const Auth = () => {
     e.preventDefault();
     try {
       const { password, fullName, phoneNumber, userName, profilepicURL } = form;
-        const url = "http://localhost:2000/";
+      const url = "http://localhost:2000/";
 
-        const {
-          data: { token, userId, hashedPassword },
-        } = await axios.post(`${url}${isSignup ? "signup" : "signin"}`, {
-          password,
-          fullName,
-          phoneNumber,
-          userName,
-        });
+      const {
+        data: { token, userId, hashedPassword },
+      } = await axios.post(`${url}${isSignup ? "signup" : "signin"}`, {
+        password,
+        fullName,
+        phoneNumber,
+        userName,
+      });
 
-        cookies.set("token", token);
-        cookies.set("userName", userName);
-        cookies.set("fullName", fullName);
-        cookies.set("userId", userId);
+      cookies.set("token", token);
+      cookies.set("userName", userName);
+      cookies.set("fullName", fullName);
+      cookies.set("userId", userId);
 
-        if (isSignup) {
-          cookies.set("phoneNumber", phoneNumber);
-          cookies.set("profilepicURL", profilepicURL);
-          cookies.set("hashedPassword", hashedPassword);
-        }
+      if (isSignup) {
+        cookies.set("phoneNumber", phoneNumber);
+        cookies.set("profilepicURL", profilepicURL);
+        cookies.set("hashedPassword", hashedPassword);
+      }
 
-        window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
