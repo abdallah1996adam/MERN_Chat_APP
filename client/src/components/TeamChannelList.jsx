@@ -5,7 +5,6 @@ const TeamChannelList = ({ children, error = false, type, loading }) => {
     return type === "team" ? (
       <div className="team-channel-list">
         <p className="team-channel-list__message">
-          Connection error, please wait a moment or tray again later !
         </p>
       </div>
     ) : null;
