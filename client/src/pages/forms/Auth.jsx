@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
-import userService from "../../services/user";
+import axios from "axios";
 //images
 import signinImage from "../../assets/signup.jpg";
 
 const cookies = new Cookies();
 const initialState = {
-  fullName: "",
-  userName: "",
-  password: "",
-  confirmPassword: "",
-  phoneNumber: "",
-  profilepicURL: "",
+  fullName: null,
+  userName: null,
+  password: null,
+  confirmPassword: null,
+  phoneNumber: null,
+  profilepicURL: null,
 };
 
 const Auth = () => {
@@ -22,29 +22,38 @@ const Auth = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
   };
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.value]: e.target.name });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { password, fullName, phoneNumber, userName, profilepicURL } = form;
+        const url = "http://localhost:2000/";
 
-      const {data: {token, userId, hashedPassword}} = await userService.signup(
-        password,
-        fullName,
-        phoneNumber,
-        userName
-      );
+        const {
+          data: { token, userId, hashedPassword },
+        } = await axios.post(`${url}${isSignup ? "signup" : "signin"}`, {
+          password,
+          fullName,
+          phoneNumber,
+          userName,
+        });
 
-      cookies.set('token', token)
-      cookies.set('userName', userName)
-      cookies.set('token', token)
-      cookies.set('token', token)
+        cookies.set("token", token);
+        cookies.set("userName", userName);
+        cookies.set("fullName", fullName);
+        cookies.set("userId", userId);
 
+        if (isSignup) {
+          cookies.set("phoneNumber", phoneNumber);
+          cookies.set("profilepicURL", profilepicURL);
+          cookies.set("hashedPassword", hashedPassword);
+        }
 
+        window.location.reload();
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
@@ -81,7 +90,7 @@ const Auth = () => {
                 <label htmlFor="phoneNumer">Phone Number</label>
                 <input
                   type="text"
-                  name="phoneNumer"
+                  name="phoneNumber"
                   placeholder="Your PhoneNumber"
                   required
                   onChange={handleChange}
