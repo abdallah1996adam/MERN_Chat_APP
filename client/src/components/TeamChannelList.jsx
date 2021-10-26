@@ -5,6 +5,7 @@ const TeamChannelList = ({ children, error = false, type, loading }) => {
     return type === "team" ? (
       <div className="team-channel-list">
         <p className="team-channel-list__message">
+          Connection error, please wait a moment or tray again later !
         </p>
       </div>
     ) : null;
@@ -21,15 +22,15 @@ const TeamChannelList = ({ children, error = false, type, loading }) => {
   }
 
   return (
-      <div className="team-channel-list">
-          <div className="team-channel-list__header">
-              <p className="team-channel-list__header__title">
-              {type === "team" ? "channels" : "Direct Messages"}
-              </p>
-          </div>
-          {children}
+    <div className="team-channel-list">
+      <div className="team-channel-list__header">
+        <p className="team-channel-list__header__title">
+          {type === "team" ? "channels" : "Direct Messages"}
+        </p>
       </div>
-  )
+      {children}
+    </div>
+  );
 };
 
 export default TeamChannelList;
